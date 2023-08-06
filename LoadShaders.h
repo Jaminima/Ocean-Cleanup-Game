@@ -24,7 +24,7 @@ extern "C" {
 	//    "type" field set to GL_NONE.
 	//
 	//  LoadShaders() returns the shader program value (as returned by
-	//    glCreateProgram()) on success, or zero on failure. 
+	//    glCreateProgram()) on success, or zero on failure.
 	//
 
 	typedef struct {

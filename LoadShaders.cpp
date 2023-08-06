@@ -19,10 +19,8 @@ extern "C" {
 	static const GLchar*
 		ReadShader(const char* filename)
 	{
-
 		FILE* infile;
 		fopen_s(&infile, filename, "rb");
-
 
 		if (!infile) {
 #ifdef _DEBUG
@@ -126,5 +124,3 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif // __cplusplus
-
-
