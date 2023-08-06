@@ -163,12 +163,15 @@
     <ClCompile Include="Project.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Asset.h" />
     <ClInclude Include="GLTFLoader.h" />
     <ClInclude Include="LoadShaders.h" />
+    <ClInclude Include="Render.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Project.h" />
     <ClInclude Include="tests\doctest.h" />
     <ClInclude Include="tests\tests.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="media\triangles.frag">
