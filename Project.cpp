@@ -12,7 +12,7 @@
 #include "glm/ext/vector_float3.hpp"
 #include "glm/fwd.hpp"
 #include <glm/ext/matrix_transform.hpp> // GLM: translate, rotate
-#include <glm/ext/matrix_clip_space.hpp> // GLM: perspective and ortho 
+#include <glm/ext/matrix_clip_space.hpp> // GLM: perspective and ortho
 #include <glm/gtc/type_ptr.hpp> // GLM: access to the value_ptr
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -41,7 +41,6 @@ const GLuint  NumVertices = 36;
 //
 #define BUFFER_OFFSET(a) ((void*)(a))
 
-
 void
 init(void)
 {
@@ -58,8 +57,6 @@ init(void)
 	glGenVertexArrays(NumVAOs, VAOs);
 	glBindVertexArray(VAOs[0]);
 
-	
-
 	GLfloat vertices[][3] = {
 		{0.5f,  0.5f, -0.5f},  //0 top right
 		{0.5f, -0.5f, -0.5f},  //1 bottom right
@@ -69,32 +66,32 @@ init(void)
 		{0.5f,  0.5f, 0.5f},  //4 top right
 		{0.5f, -0.5f, 0.5f},  //5 bottom right
 		{-0.5f, -0.5f, 0.5f}, //6 bottom left
-		{-0.5f,  0.5f, 0.5f}  //7 top left 
+		{-0.5f,  0.5f, 0.5f}  //7 top left
 	};
 	GLuint indices[][3] = {  // note that we start from 0!
 		{0, 3, 1},  // first Triangle front
 		{3, 2, 1},   // second Triangle
-		
+
 		{4, 7, 0 },
 		{7, 3, 0 },
-		
+
 		{1, 2, 5 },
 		{2, 6, 5 },
-		
+
 		{5, 4, 0 },
 		{0, 1, 5 },
-		
+
 		{2, 3, 7 },
 		{7, 6, 2 },
-		
+
 		{4, 5, 7 },  // first Triangle back
 		{7, 5, 6 }   // second Triangle
 	};
 
 	GLfloat  colours[][4] = {
-		{ 1.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f },  
-		{ 1.0f, 1.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f }, 
-		{ 0.0f, 0.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f }, 
+		{ 1.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f },
+		{ 1.0f, 1.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f },
+		{ 0.0f, 0.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f },
 	};
 	GLfloat  texture_coords[] = {
 		 1.0f, 1.0f,
@@ -103,33 +100,25 @@ init(void)
 		 0.0f, 1.0f,
 
 		 0.0f, 1.0f,
-	     0.0f, 0.0f,
+		 0.0f, 0.0f,
 		 1.0f, 0.0f,
 		 1.0f, 1.0f,
-
-		
-	
 	};
 
-
-
 	glGenBuffers(NumBuffers, Buffers);
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[Triangles]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Buffers[Indices]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	
-
 	glVertexAttribPointer(vPosition, 3, GL_FLOAT,
 		GL_FALSE, 0, BUFFER_OFFSET(0));
-	
+
 	//Colour Binding
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[Colours]);
 	glBufferStorage(GL_ARRAY_BUFFER, sizeof(colours), colours, 0);
-
 
 	glVertexAttribPointer(cPosition, 4, GL_FLOAT,
 		GL_FALSE, 0, BUFFER_OFFSET(0));
@@ -146,7 +135,6 @@ init(void)
 
 	glBindVertexArray(VAOs[1]);
 
-
 	glGenBuffers(NumBuffers, Buffers);
 
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[Triangles]);
@@ -155,15 +143,12 @@ init(void)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Buffers[Indices]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-
-
 	glVertexAttribPointer(vPosition, 3, GL_FLOAT,
 		GL_FALSE, 0, BUFFER_OFFSET(0));
 
 	//Colour Binding
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[Colours]);
 	glBufferStorage(GL_ARRAY_BUFFER, sizeof(colours), colours, 0);
-
 
 	glVertexAttribPointer(cPosition, 4, GL_FLOAT,
 		GL_FALSE, 0, BUFFER_OFFSET(0));
@@ -174,11 +159,8 @@ init(void)
 	glVertexAttribPointer(tPosition, 2, GL_FLOAT,
 		GL_FALSE, 0, BUFFER_OFFSET(0));
 
-
 	loadTexture(texture1, "media/textures/awesomeface.png");
 	glUniform1i(glGetUniformLocation(program, "texture1"), 0);
-
-
 
 	// creating the model matrix
 	glm::mat4 model = glm::mat4(1.0f);
@@ -196,7 +178,6 @@ init(void)
 	// Adding all matrices up to create combined matrix
 	glm::mat4 mvp = projection * view * model;
 
-
 	//adding the Uniform to the shader
 	int mvpLoc = glGetUniformLocation(program, "mvp");
 	glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
@@ -206,9 +187,9 @@ init(void)
 	glEnableVertexAttribArray(tPosition);
 }
 
-void loadTexture(GLuint &texture, std::string texturepath)
+void loadTexture(GLuint& texture, std::string texturepath)
 {
-	// load and create a texture 
+	// load and create a texture
 // -------------------------
 
 // texture 1
@@ -237,7 +218,6 @@ void loadTexture(GLuint &texture, std::string texturepath)
 	stbi_image_free(data);
 }
 
-
 //----------------------------------------------------------------------------
 //
 // display
@@ -255,22 +235,17 @@ display(void)
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
 
-
 	//modify position using mv & p
 	glBindVertexArray(VAOs[0]);
 	glBindTexture(GL_TEXTURE_2D, texture1);
-	
+
 	glDrawElements(GL_TRIANGLES, NumVertices, GL_UNSIGNED_INT, 0);
-
-
 
 	//modify position using mv & p
 	glBindVertexArray(VAOs[1]);
 	glBindTexture(GL_TEXTURE_2D, texture1);
-glDrawElements(GL_TRIANGLES, NumVertices, GL_UNSIGNED_INT, 0);
-	
+	glDrawElements(GL_TRIANGLES, NumVertices, GL_UNSIGNED_INT, 0);
 }
-
 
 int runTests(std::string value)
 {
@@ -309,7 +284,7 @@ main(int argc, char** argv)
 
 	while (!glfwWindowShouldClose(window))
 	{
-		// uncomment to draw only wireframe 
+		// uncomment to draw only wireframe
 		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		display();
