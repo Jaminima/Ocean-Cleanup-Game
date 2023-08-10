@@ -1,5 +1,9 @@
-#pragma once
+#ifndef __Render
+#define __Render
 #include "GL.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 enum VAO_IDs { Triangles, Indices, Colours, Tex, NumVAOs = 2 };
 enum Buffer_IDs { ArrayBuffer, NumBuffers = 4 };
@@ -187,3 +191,5 @@ void InitRenderer() {
 	glEnableVertexAttribArray(cPosition);
 	glEnableVertexAttribArray(tPosition);
 }
+
+#endif

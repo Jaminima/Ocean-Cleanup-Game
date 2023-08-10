@@ -1,6 +1,7 @@
 #pragma once
+#ifndef __Asset
+#define __Asset
 #include "GL.h"
-
 
 class AssetData {
 public:
@@ -12,12 +13,11 @@ public:
 class Asset {
 public:
 	string fileName;
-	string* srcGLTF;
-	string* srcBIN;
+	char* srcBIN;
 
-	string* readFile(string file);
+	Asset(string fileName);
 
 	void LoadAsset();
-
-	void ParseBlock(int strIdx = 0, int objectDepth = 0, int arrayIdx = 0);
 };
+
+#endif

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __GL
+#define __GL
+
 #include "GL/glew.h"
 #include "GL/freeglut.h"
 #include "GLFW/glfw3.h"
@@ -11,11 +13,10 @@
 #include <vector>
 #include <glm/fwd.hpp>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 #include <string>
 #include <iostream>
 
 using namespace std;
 using namespace glm;
+
+#endif

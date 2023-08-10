@@ -8,9 +8,8 @@
 
 #include <vector>
 
-#include "GLTFLoader.h"
-
 #include "Project.h"
+#include "Asset.h"
 
 int runTests(std::string value)
 {
@@ -38,5 +37,9 @@ int runTests(std::string value)
 int
 main(int argc, char** argv)
 {
+	Asset a("Cube");
+
+	a.LoadAsset();
+
 	initWindow();
 }
