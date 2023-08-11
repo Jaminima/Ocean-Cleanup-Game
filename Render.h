@@ -42,7 +42,7 @@ void loadTexture(GLuint& texture, std::string texturepath)
 
 Asset a("Cube");
 
-Asset b("Box");
+Asset b("Duck");
 
 SceneObjects sceneObjs;
 
@@ -62,23 +62,27 @@ void InitRenderer() {
 	a.LoadAsset();
 	b.LoadAsset();
 
+	a.position = vec3(1, 0, -5);
+	b.position = vec3(-1, 0, -7);
+	b.scale = vec3(0.01);
+
 	a.Build();
-	//b.Build();
+	b.Build();
 }
 
 void Render() {
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-	/*glFrontFace(GL_CW);
+	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
-	glEnable(GL_CULL_FACE);*/
+	glEnable(GL_CULL_FACE);
 
-	/*glDepthFunc(GL_LEQUAL);
+	/*glDepthFunc(GL_GEQUAL);
 	glEnable(GL_DEPTH_TEST);*/
 
 	a.Render(program, &sceneObjs);
-	//b.Render(program, &sceneObjs);
+	b.Render(program, &sceneObjs);
 }
 
 #endif

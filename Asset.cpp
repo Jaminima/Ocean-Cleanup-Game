@@ -46,11 +46,10 @@ void Asset::LoadAsset()
 	auto jBuffersArray = gltfJson.find_field("buffers").get_array();
 
 	for (auto jBuffer : jBuffersArray) {
+		string fName = filePath + (string)jBuffer.find_field_unordered("uri").get_string().value();
+		int fLen = jBuffer.find_field_unordered("byteLength").get_int64();
 		buffers.push_back(
-			ReadBinaryFile(
-				filePath + (string)jBuffer.find_field("uri").get_string().value(),
-				jBuffer.find_field("byteLength").get_int64()
-			));
+			ReadBinaryFile(fName,fLen));
 	}
 
 	//Construct Buffer Views
@@ -61,7 +60,9 @@ void Asset::LoadAsset()
 	for (auto jBufferView : jBufferViewsArray) {
 		int buff = jBufferView.find_field_unordered("buffer").get_int64();
 		int buffLen = jBufferView.find_field_unordered("byteLength").get_int64();
-		int buffOffset = jBufferView.find_field_unordered("byteOffset").get_int64();
+
+		auto buffOff = jBufferView.find_field_unordered("byteOffset");
+		int buffOffset = buffOff.error() ? 0 : buffOff.get_int64().value();
 
 		bufferViews.push_back(&buffers[buff][buffOffset]);
 	}
@@ -73,8 +74,10 @@ void Asset::LoadAsset()
 
 	for (auto accessor : jAccessorsArray) {
 		auto bufferIdx = accessor.find_field_unordered("bufferView").get_int64().value();
-		auto bufferOffset = accessor.find_field_unordered("byteOffset").get_int64().value();
 		auto bufferSize = accessor.find_field_unordered("count").get_int64().value();
+
+		auto buffOff = accessor.find_field_unordered("byteOffset");
+		int bufferOffset = buffOff.error() ? 0 : buffOff.get_int64().value();
 
 		auto bufferView = &bufferViews[bufferIdx][bufferOffset];
 
