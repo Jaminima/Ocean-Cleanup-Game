@@ -17,6 +17,13 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	case 'D':
 		sceneObjs.cam.updatePosition(vec3(-1, 0, 0));
 		break;
+	case 'Z':
+		sceneObjs.cam.updatePosition(vec3(0, -1, 0));
+		break;
+	case 'X':
+		sceneObjs.cam.updatePosition(vec3(0, 1, 0));
+		break;
+
 	}
 
 	sceneObjs.cam.updateMatrix();
