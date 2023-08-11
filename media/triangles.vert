@@ -8,6 +8,8 @@ layout (location = 2) in vec2 VertexTextureCoordinate;
 out vec4 Color;
 out vec2 vTextureCoordinate;
 
+uniform sampler2D faceTexture;
+
 uniform mat4 ModelMatrix;
 uniform mat4 ViewMatrix;
 uniform mat4 ProjectionMatrix;

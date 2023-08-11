@@ -1,8 +1,11 @@
 #include "Asset.h"
 #include <fstream>
 #include <sstream>
-#include "dependencies/simdjson.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+#include "dependencies/simdjson.h"
 using namespace simdjson;
 
 const string fileDir = "./assets/";
@@ -164,6 +167,12 @@ void Asset::Render(GLuint programHandle,SceneObjects* sceneObjects)
 	glm::mat3 normalMatrix = mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2]));
 	glUniformMatrix3fv(normRef, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
+	if (textures.size() > 0) {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textures[0]);
+		glUniform1i(glGetUniformLocation(programHandle, "faceTexture"), 0);
+	}
+
 	for (auto m : *this->meshes) {
 		m->Render();
 	}
@@ -215,4 +224,44 @@ void Mesh::Render()
 	glDrawArrays(GL_TRIANGLES, 0, this->vertexData.size());
 
 	glBindVertexArray(0);
+}
+
+void loadTexture(GLuint& texture, std::string texturepath)
+{
+	// load and create a texture
+// -------------------------
+
+// texture 1
+// ---------
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load image, create texture and generate mipmaps
+	GLint width, height, nrChannels;
+	stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+	unsigned char* data = stbi_load(texturepath.c_str(), &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+}
+
+void Asset::AddTexture(string filePath)
+{
+	GLuint tex = 0;
+
+	loadTexture(tex, fileDir + this->fileName + "/" + filePath);
+
+	textures.push_back(tex);
 }

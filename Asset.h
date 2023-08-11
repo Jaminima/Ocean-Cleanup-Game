@@ -38,6 +38,8 @@ public:
 
 	vector<Mesh*>* meshes;
 
+	vector<GLuint> textures;
+
 	vec3 rotation = vec3();
 	vec3 position = vec3(0,0,-5);
 	vec3 scale = vec3(1);
@@ -51,6 +53,8 @@ public:
 	void Build();
 
 	void Render(GLuint programHandle, SceneObjects* sceneObjects);
+
+	void AddTexture(string filePath);
 };
 
 #endif
