@@ -41,5 +41,9 @@ main(int argc, char** argv)
 
 	a.LoadAsset();
 
+	Asset b("Box");
+
+	b.LoadAsset();
+
 	initWindow();
 }
