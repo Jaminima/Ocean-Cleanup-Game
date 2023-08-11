@@ -10,10 +10,25 @@ public:
 	vector<ivec3> indexSet;
 };
 
+class Mesh {
+public:
+	string name;
+
+	vector<vec2> texCooData;
+
+	vector<vec3> vertexData;
+	vector<vec3> normalData;
+
+	vector<vec4> colourData;
+
+	Mesh(string name);
+};
+
 class Asset {
 public:
 	string fileName;
-	char* srcBIN;
+
+	vector<Mesh*> *meshes;
 
 	Asset(string fileName);
 
