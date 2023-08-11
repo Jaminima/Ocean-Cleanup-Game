@@ -35,15 +35,16 @@ void InitRenderer() {
 }
 
 void Render() {
+
 	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_DEPTH_TEST);
 
 	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
-
-	/*glDepthFunc(GL_GEQUAL);
-	glEnable(GL_DEPTH_TEST);*/
 
 	a.Render(program, &sceneObjs);
 	b.Render(program, &sceneObjs);
