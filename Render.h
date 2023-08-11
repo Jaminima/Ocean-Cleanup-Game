@@ -44,6 +44,8 @@ Asset a("Cube");
 
 Asset b("Box");
 
+SceneObjects sceneObjs;
+
 GLuint program = 0;
 
 void InitRenderer() {
@@ -75,8 +77,8 @@ void Render() {
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-	a.Render();
-	b.Render();
+	a.Render(program, &sceneObjs);
+	b.Render(program, &sceneObjs);
 }
 
 #endif

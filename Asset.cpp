@@ -131,8 +131,35 @@ void Asset::Build()
 	}
 }
 
-void Asset::Render()
+void Asset::Render(GLuint programHandle,SceneObjects* sceneObjects)
 {
+	glm::mat4 model(1.0f);
+	model = glm::translate(model, vec3(position));
+
+	model = glm::rotate(model, rotation[0], vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, rotation[1], vec3(0.0f, 1.0f, 1.0f));
+	model = glm::rotate(model, rotation[2], vec3(0.0f, 0.0f, 1.0f));
+
+	model = glm::scale(model, scale);
+
+	GLuint modelRef = glGetUniformLocation(programHandle, "ModelMatrix");
+	glUniformMatrix4fv(modelRef, 1, GL_FALSE, glm::value_ptr(model));
+
+	GLuint viewRef = glGetUniformLocation(programHandle, "ViewMatrix");
+	glUniformMatrix4fv(viewRef, 1, GL_FALSE, glm::value_ptr(sceneObjects->cam.viewMatrix));
+
+	GLuint projRef = glGetUniformLocation(programHandle, "ProjectionMatrix");
+	glUniformMatrix4fv(projRef, 1, GL_FALSE, glm::value_ptr(sceneObjects->cam.projectionMatrix));
+
+	glm::mat4 mv = sceneObjects->cam.viewMatrix * model;
+
+	GLuint modelViewRef = glGetUniformLocation(programHandle, "ModelViewMatrix");
+	glUniformMatrix4fv(modelViewRef, 1, GL_FALSE, glm::value_ptr(mv));
+
+	GLuint normRef = glGetUniformLocation(programHandle, "NormalMatrix");
+	glm::mat3 normalMatrix = mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2]));
+	glUniformMatrix3fv(normRef, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
 	for (auto m : *this->meshes) {
 		m->Render();
 	}

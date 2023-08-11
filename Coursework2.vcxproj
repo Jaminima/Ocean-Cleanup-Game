@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Asset.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="dependencies\simdjson.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="Project.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="GL.h" />
     <ClInclude Include="LoadShaders.h" />
     <ClInclude Include="Render.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Project.h" />
     <ClInclude Include="tests\doctest.h" />
