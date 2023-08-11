@@ -171,6 +171,10 @@ void Asset::Render(GLuint programHandle,SceneObjects* sceneObjects)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textures[0]);
 		glUniform1i(glGetUniformLocation(programHandle, "faceTexture"), 0);
+		glUniform1i(glGetUniformLocation(programHandle, "hasTexture"), 1);
+	}
+	else {
+		glUniform1i(glGetUniformLocation(programHandle, "hasTexture"), 0);
 	}
 
 	for (auto m : *this->meshes) {
@@ -247,7 +251,7 @@ void loadTexture(GLuint& texture, std::string texturepath)
 	unsigned char* data = stbi_load(texturepath.c_str(), &width, &height, &nrChannels, 0);
 	if (data)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else

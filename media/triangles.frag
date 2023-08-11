@@ -5,8 +5,9 @@ in vec2 vTextureCoordinate;
 layout (location = 0) out vec4 FragColor;
 
 uniform sampler2D faceTexture;
+uniform bool hasTexture;
 
 void main()
 {
-    FragColor = texture(faceTexture, vTextureCoordinate);
+    FragColor = hasTexture ? texture(faceTexture, vTextureCoordinate) : vec4(255);
 }
