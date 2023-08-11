@@ -67,9 +67,9 @@ void Asset::LoadAsset()
 	}
 
 	//Construct Meshes
-	auto jMeshArray = gltfJson.find_field_unordered("meshes");
+	auto jMeshArray = gltfJson.find_field_unordered("meshes").get_array();
 
-	for (auto jMesh : jMeshArray.get_array()) {
+	for (auto jMesh : jMeshArray) {
 		auto m = new Mesh((string)jMesh.find_field("name").get_string().value());
 
 		auto prim = jMesh.find_field_unordered("primitives").at(0);
