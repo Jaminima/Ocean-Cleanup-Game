@@ -1,6 +1,8 @@
 #ifndef __GL
 #define __GL
 
+#define bufferCount 3
+
 #include "GL/glew.h"
 #include "GL/freeglut.h"
 #include "GLFW/glfw3.h"

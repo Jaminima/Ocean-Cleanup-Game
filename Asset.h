@@ -12,6 +12,9 @@ public:
 
 class Mesh {
 public:
+	GLuint buffers[bufferCount];
+	GLuint vaoBuffer;
+
 	string name;
 
 	vector<vec2> texCooData;
@@ -22,6 +25,10 @@ public:
 	vector<vec4> colourData;
 
 	Mesh(string name);
+
+	void Build();
+
+	void Render();
 };
 
 class Asset {

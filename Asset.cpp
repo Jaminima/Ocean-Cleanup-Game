@@ -128,3 +128,46 @@ Mesh::Mesh(string name)
 {
 	this->name = name;
 }
+
+void Mesh::Build()
+{
+	glGenVertexArrays(1, &this->vaoBuffer);
+	glBindVertexArray(this->vaoBuffer);
+
+	glGenBuffers(bufferCount, this->buffers);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->buffers[0]);
+	glBufferData(GL_ARRAY_BUFFER, this->vertexData.size() * sizeof(vec3), this->vertexData.data(), GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->buffers[1]);
+	glBufferData(GL_ARRAY_BUFFER, this->normalData.size() * sizeof(vec3), this->normalData.data(), GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->buffers[2]);
+	glBufferData(GL_ARRAY_BUFFER, this->texCooData.size() * sizeof(vec2), this->texCooData.data(), GL_STATIC_DRAW);
+
+	glBindVertexBuffer(0, this->buffers[0], 0, sizeof(vec3));
+	glBindVertexBuffer(1, this->buffers[1], 0, sizeof(vec3));
+	glBindVertexBuffer(2, this->buffers[2], 0, sizeof(vec2));
+
+	glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0);
+	glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, 0);
+	glVertexAttribFormat(2, 2, GL_FLOAT, GL_FALSE, 0);
+
+	glVertexAttribBinding(0, 0);
+	glVertexAttribBinding(1, 1);
+	glVertexAttribBinding(2, 2);
+
+	glBindVertexArray(0);
+}
+
+void Mesh::Render()
+{
+	glBindVertexArray(this->vaoBuffer);
+	glDrawArrays(GL_TRIANGLES, 0, this->vertexData.size());
+
+	glBindVertexArray(0);
+}
