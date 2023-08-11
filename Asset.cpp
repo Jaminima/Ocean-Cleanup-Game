@@ -110,7 +110,8 @@ void Asset::LoadAsset()
 		auto normBuff = accessors[normAccessor];
 		auto texBuff = _tex.error() ? 0x0 : accessors[texAccessor];
 
-		for (int i = 0; i < idxBuff->size; i++) {
+		//for (int i = 0; i < idxBuff->size; i++) {
+		for (int i=idxBuff->size-1;i>=0;i--){
 			int idx = idxBuff->buff[i];
 
 			m->vertexData.push_back(((vec3*)posBuff->buff)[idx]);

@@ -39,7 +39,7 @@ public:
 	vector<Mesh*>* meshes;
 
 	vec3 rotation = vec3();
-	vec3 position = vec3(0,-1,-5);
+	vec3 position = vec3(0,0,-5);
 	vec3 scale = vec3(1);
 
 	Asset(string fileName);

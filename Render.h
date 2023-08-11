@@ -60,10 +60,10 @@ void InitRenderer() {
 	glUseProgram(program);
 
 	a.LoadAsset();
-	b.LoadAsset();
+	//b.LoadAsset();
 
 	a.Build();
-	b.Build();
+	//b.Build();
 }
 
 void Render() {
@@ -74,11 +74,11 @@ void Render() {
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
 
-	glDepthFunc(GL_LEQUAL);
-	glEnable(GL_DEPTH_TEST);
+	/*glDepthFunc(GL_LEQUAL);
+	glEnable(GL_DEPTH_TEST);*/
 
 	a.Render(program, &sceneObjs);
-	b.Render(program, &sceneObjs);
+	//b.Render(program, &sceneObjs);
 }
 
 #endif
