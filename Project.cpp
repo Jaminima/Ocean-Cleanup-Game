@@ -34,16 +34,7 @@ int runTests(std::string value)
 //
 // main
 //
-int
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
-	Asset a("Cube");
-
-	a.LoadAsset();
-
-	Asset b("Box");
-
-	b.LoadAsset();
-
 	initWindow();
 }

@@ -74,14 +74,14 @@ void Asset::LoadAsset()
 	for (auto accessor : jAccessorsArray) {
 		auto bufferIdx = accessor.find_field_unordered("bufferView").get_int64().value();
 		auto bufferOffset = accessor.find_field_unordered("byteOffset").get_int64().value();
-		auto bufferCount = accessor.find_field_unordered("count").get_int64().value();
+		auto bufferSize = accessor.find_field_unordered("count").get_int64().value();
 
 		auto bufferView = &bufferViews[bufferIdx][bufferOffset];
 
 		auto buff = new BufferAccessors();
 
 		buff->buff = bufferView;
-		buff->size = bufferCount;
+		buff->size = bufferSize;
 
 		accessors.push_back(buff);
 	}

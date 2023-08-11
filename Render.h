@@ -2,18 +2,10 @@
 #define __Render
 #include "GL.h"
 
+#include "Asset.h"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
-enum VAO_IDs { Triangles, Indices, Colours, Tex, NumVAOs = 2 };
-enum Buffer_IDs { ArrayBuffer, NumBuffers = 4 };
-enum Attrib_IDs { vPosition = 0, cPosition = 1, tPosition = 2 };
-
-GLuint  VAOs[NumVAOs];
-GLuint  Buffers[NumBuffers];
-GLuint texture1;
-
-const GLuint  NumVertices = 36;
 
 #define BUFFER_OFFSET(a) ((void*)(a))
 
@@ -48,6 +40,12 @@ void loadTexture(GLuint& texture, std::string texturepath)
 	stbi_image_free(data);
 }
 
+Asset a("Cube");
+
+Asset b("Box");
+
+GLuint program = 0;
+
 void InitRenderer() {
 	ShaderInfo  shaders[] =
 	{
@@ -56,140 +54,29 @@ void InitRenderer() {
 		{ GL_NONE, NULL }
 	};
 
-	GLuint program = LoadShaders(shaders);
+	program = LoadShaders(shaders);
 	glUseProgram(program);
 
-	glGenVertexArrays(NumVAOs, VAOs);
-	glBindVertexArray(VAOs[0]);
+	a.LoadAsset();
+	b.LoadAsset();
 
-	GLfloat vertices[][3] = {
-		{0.5f,  0.5f, -0.5f},  //0 top right
-		{0.5f, -0.5f, -0.5f},  //1 bottom right
-		{-0.5f, -0.5f, -0.5f}, //2 bottom left
-		{-0.5f,  0.5f, -0.5f},  //3 top left
+	a.Build();
+	b.Build();
+}
 
-		{0.5f,  0.5f, 0.5f},  //4 top right
-		{0.5f, -0.5f, 0.5f},  //5 bottom right
-		{-0.5f, -0.5f, 0.5f}, //6 bottom left
-		{-0.5f,  0.5f, 0.5f}  //7 top left
-	};
-	GLuint indices[][3] = {  // note that we start from 0!
-		{0, 3, 1},  // first Triangle front
-		{3, 2, 1},   // second Triangle
+void Render() {
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-		{4, 7, 0 },
-		{7, 3, 0 },
+	glFrontFace(GL_CW);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
 
-		{1, 2, 5 },
-		{2, 6, 5 },
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_DEPTH_TEST);
 
-		{5, 4, 0 },
-		{0, 1, 5 },
-
-		{2, 3, 7 },
-		{7, 6, 2 },
-
-		{4, 5, 7 },  // first Triangle back
-		{7, 5, 6 }   // second Triangle
-	};
-
-	GLfloat  colours[][4] = {
-		{ 1.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f },
-		{ 1.0f, 1.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f },
-		{ 0.0f, 0.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f },
-	};
-	GLfloat  texture_coords[] = {
-		 1.0f, 1.0f,
-		 1.0f, 0.0f,
-		 0.0f, 0.0f,
-		 0.0f, 1.0f,
-
-		 0.0f, 1.0f,
-		 0.0f, 0.0f,
-		 1.0f, 0.0f,
-		 1.0f, 1.0f,
-	};
-
-	glGenBuffers(NumBuffers, Buffers);
-
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[Triangles]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Buffers[Indices]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(vPosition, 3, GL_FLOAT,
-		GL_FALSE, 0, BUFFER_OFFSET(0));
-
-	//Colour Binding
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[Colours]);
-	glBufferStorage(GL_ARRAY_BUFFER, sizeof(colours), colours, 0);
-
-	glVertexAttribPointer(cPosition, 4, GL_FLOAT,
-		GL_FALSE, 0, BUFFER_OFFSET(0));
-
-	//Texture Binding
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[Tex]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(texture_coords), texture_coords, GL_STATIC_DRAW);
-	glVertexAttribPointer(tPosition, 2, GL_FLOAT,
-		GL_FALSE, 0, BUFFER_OFFSET(0));
-
-	glEnableVertexAttribArray(vPosition);
-	glEnableVertexAttribArray(cPosition);
-	glEnableVertexAttribArray(tPosition);
-
-	glBindVertexArray(VAOs[1]);
-
-	glGenBuffers(NumBuffers, Buffers);
-
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[Triangles]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Buffers[Indices]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(vPosition, 3, GL_FLOAT,
-		GL_FALSE, 0, BUFFER_OFFSET(0));
-
-	//Colour Binding
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[Colours]);
-	glBufferStorage(GL_ARRAY_BUFFER, sizeof(colours), colours, 0);
-
-	glVertexAttribPointer(cPosition, 4, GL_FLOAT,
-		GL_FALSE, 0, BUFFER_OFFSET(0));
-
-	//Texture Binding
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[Tex]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(texture_coords), texture_coords, GL_STATIC_DRAW);
-	glVertexAttribPointer(tPosition, 2, GL_FLOAT,
-		GL_FALSE, 0, BUFFER_OFFSET(0));
-
-	loadTexture(texture1, "media/textures/awesomeface.png");
-	glUniform1i(glGetUniformLocation(program, "texture1"), 0);
-
-	// creating the model matrix
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-	model = glm::rotate(model, glm::radians(-40.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-
-	// creating the view matrix
-	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -2.0f));
-
-	// creating the projection matrix
-	glm::mat4 projection = glm::perspective(45.0f, 4.0f / 3, 0.1f, 20.0f);
-
-	// Adding all matrices up to create combined matrix
-	glm::mat4 mvp = projection * view * model;
-
-	//adding the Uniform to the shader
-	int mvpLoc = glGetUniformLocation(program, "mvp");
-	glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
-
-	glEnableVertexAttribArray(vPosition);
-	glEnableVertexAttribArray(cPosition);
-	glEnableVertexAttribArray(tPosition);
+	a.Render();
+	b.Render();
 }
 
 #endif
