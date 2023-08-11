@@ -17,6 +17,8 @@ public:
 
 	Asset(string fileName);
 
+	char* ReadBinaryFile(string filePath, int size);
+
 	void LoadAsset();
 };
 

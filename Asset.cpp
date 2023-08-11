@@ -12,34 +12,52 @@ Asset::Asset(string fileName)
 	this->fileName = fileName;
 }
 
-void Asset::LoadAsset()
+char* Asset::ReadBinaryFile(string filePath, int size)
 {
-	string filePath = fileDir + this->fileName + "/" + this->fileName;
+	std::ifstream input(filePath, std::ios::binary);
 
-	std::ifstream input(filePath + ".bin", std::ios::binary);
+	char* bytes = new char[size];
 
-	std::vector<char> bytes(
-		(std::istreambuf_iterator<char>(input)),
-		(std::istreambuf_iterator<char>()));
+	input.read(bytes, size);
 
 	input.close();
 
+	return bytes;
+}
+
+void Asset::LoadAsset()
+{
+	string filePath = fileDir + this->fileName + "/";
+
 	ondemand::parser parser;
-	padded_string json = padded_string::load(filePath + ".gltf");
+	padded_string json = padded_string::load(filePath + this->fileName + ".gltf");
 	ondemand::document gltfJson = parser.iterate(json);
 
-	auto bufferViews = gltfJson.find_field_unordered("bufferViews");
-	auto bufferViews_array = bufferViews.get_array();
-	int bufferViews_count = bufferViews_array.count_elements();
+	//Load Buffer Files
+	vector<char*> buffers;
 
-	for (int i = 0; i < bufferViews_count; i++) {
-		auto t_bufferView = bufferViews_array.at(i);
+	auto jBuffersArray = gltfJson.find_field("buffers").get_array();
+	int jBuffersLen = jBuffersArray.count_elements();
 
-		int buff = t_bufferView.find_field("buffer").get_int64();
-		int buffLen = t_bufferView.find_field("byteLength").get_int64();
-		int buffOffset = t_bufferView.find_field("byteOffset").get_int64();
+	for (int i = 0; i < jBuffersLen; i++) {
+		auto jBuffer = jBuffersArray.at(i);
+		buffers.push_back(
+			ReadBinaryFile(
+				filePath + (string)jBuffer.find_field("uri").get_string().value(),
+				jBuffer.find_field("byteLength").get_int64()
+			));
+	}
 
-		char* d = new char[buffLen];
-		memcpy(d,&bytes.data()[buffOffset], buffLen);
+	//Construct Buffer Views
+	vector<char*> bufferViews;
+
+	auto jBufferViewsArray = gltfJson.find_field_unordered("bufferViews").get_array();
+
+	for (auto jBufferView : jBufferViewsArray) {
+		int buff = jBufferView.find_field("buffer").get_int64();
+		int buffLen = jBufferView.find_field("byteLength").get_int64();
+		int buffOffset = jBufferView.find_field("byteOffset").get_int64();
+
+		bufferViews.push_back(&buffers[buff][buffOffset]);
 	}
 }
