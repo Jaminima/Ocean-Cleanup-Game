@@ -2,6 +2,26 @@
 #include "Render.h"
 #include "GLFW/glfw3.h"
 
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	switch (key) {
+	case 'W':
+		sceneObjs.cam.updatePosition(vec3(0, 0, 1));
+		break;
+	case 'S':
+		sceneObjs.cam.updatePosition(vec3(0, 0, -1));
+		break;
+	case 'A':
+		sceneObjs.cam.updatePosition(vec3(1, 0, 0));
+		break;
+	case 'D':
+		sceneObjs.cam.updatePosition(vec3(-1, 0, 0));
+		break;
+	}
+
+	sceneObjs.cam.updateMatrix();
+}
+
 void initWindow() {
 	glfwInit();
 
@@ -11,6 +31,8 @@ void initWindow() {
 	glewInit();
 
 	InitRenderer();
+
+	glfwSetKeyCallback(window, KeyCallback);
 
 	while (!glfwWindowShouldClose(window))
 	{
