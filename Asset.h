@@ -35,7 +35,7 @@ class Asset {
 public:
 	string fileName;
 
-	vector<Mesh*> *meshes;
+	vector<Mesh*>* meshes;
 
 	Asset(string fileName);
 
