@@ -112,7 +112,7 @@ void Asset::LoadAsset()
 
 		//for (int i = 0; i < idxBuff->size; i++) {
 		for (int i=idxBuff->size-1;i>=0;i--){
-			int idx = idxBuff->buff[i];
+			int idx = ((uint16*)idxBuff->buff)[i];
 
 			m->vertexData.push_back(((vec3*)posBuff->buff)[idx]);
 			m->normalData.push_back(((vec3*)normBuff->buff)[idx]);

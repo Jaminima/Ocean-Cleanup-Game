@@ -60,7 +60,7 @@ void InitRenderer() {
 	glUseProgram(program);
 
 	a.LoadAsset();
-	//b.LoadAsset();
+	b.LoadAsset();
 
 	a.Build();
 	//b.Build();
@@ -70,9 +70,9 @@ void Render() {
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-	glFrontFace(GL_CW);
+	/*glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
-	glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);*/
 
 	/*glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);*/
