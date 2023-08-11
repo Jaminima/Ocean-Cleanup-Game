@@ -42,6 +42,10 @@ public:
 	char* ReadBinaryFile(string filePath, int size);
 
 	void LoadAsset();
+
+	void Build();
+
+	void Render();
 };
 
 #endif

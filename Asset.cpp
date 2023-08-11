@@ -124,6 +124,20 @@ void Asset::LoadAsset()
 	}
 }
 
+void Asset::Build()
+{
+	for (auto m : *this->meshes) {
+		m->Build();
+	}
+}
+
+void Asset::Render()
+{
+	for (auto m : *this->meshes) {
+		m->Render();
+	}
+}
+
 Mesh::Mesh(string name)
 {
 	this->name = name;
