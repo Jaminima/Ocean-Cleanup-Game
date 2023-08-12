@@ -48,6 +48,15 @@ void MouseCallback(GLFWwindow* window, double xpos, double ypos)
 
 	mouseX = xpos;
 	mouseY = ypos;
+
+	for (auto a : assets) {
+		if (a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt)) {
+			a->state.hovered = true;
+		}
+		else {
+			a->state.hovered = false;
+		}
+	}
 }
 
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)

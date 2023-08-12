@@ -79,7 +79,7 @@ void Asset::LoadAsset()
 		string fName = filePath + (string)jBuffer.find_field_unordered("uri").get_string().value();
 		int fLen = jBuffer.find_field_unordered("byteLength").get_int64();
 		buffers.push_back(
-			ReadBinaryFile(fName,fLen));
+			ReadBinaryFile(fName, fLen));
 	}
 
 	//Construct Buffer Views
@@ -155,7 +155,7 @@ void Asset::LoadAsset()
 		auto texBuff = _tex.error() ? 0x0 : accessors[texAccessor];
 
 		//for (int i = 0; i < idxBuff->size; i++) {
-		for (int i=idxBuff->size-1;i>=0;i--){
+		for (int i = idxBuff->size - 1; i >= 0; i--) {
 			int idx = idxType == _short ? ((uint16*)idxBuff->bufferView->buff)[i] : ((int*)idxBuff->bufferView->buff)[i];
 
 			m->vertexData.push_back((*(vec3*)posBuff->getValue(idx, sizeof(vec3))));
@@ -177,7 +177,7 @@ void Asset::Build()
 	this->Update();
 }
 
-void Asset::Render(GLuint programHandle,SceneObjects* sceneObjects)
+void Asset::Render(GLuint programHandle, SceneObjects* sceneObjects)
 {
 	glm::mat4 model(1.0f);
 	model = glm::translate(model, vec3(position));
@@ -215,6 +215,8 @@ void Asset::Render(GLuint programHandle,SceneObjects* sceneObjects)
 	else {
 		glUniform1i(glGetUniformLocation(programHandle, "hasTexture"), 0);
 	}
+
+	glUniform1i(glGetUniformLocation(programHandle, "hovered"), state.hovered);
 
 	for (auto m : *this->meshes) {
 		m->Render();
@@ -316,7 +318,7 @@ void Asset::Update()
 	vec3 min = vec3(), max = vec3();
 	for (auto m : *meshes) {
 		for (auto v : m->vertexData) {
-			for (int i = 0; i < 3;i++) {
+			for (int i = 0; i < 3; i++) {
 				if (v[i] > max[i])
 					max[i] = v[i];
 
@@ -343,7 +345,7 @@ bool Asset::BeamCollides(vec3 origin, vec3 dir)
 {
 	dir = -normalize(dir);
 
-	if (all(greaterThanEqual(boundMin, origin)) && all(lessThanEqual(boundMax,origin)))
+	if (all(greaterThanEqual(boundMin, origin)) && all(lessThanEqual(boundMax, origin)))
 		return true;
 
 	auto dirTo1 = normalize(origin - boundMin);
@@ -351,7 +353,7 @@ bool Asset::BeamCollides(vec3 origin, vec3 dir)
 
 	/*if (all(greaterThanEqual(dirToMin, dir)) && all(lessThanEqual(dirToMax, dir)))
 		return true;*/
-	
+
 	const float sizeAdjust = 0.8f;
 	int outOfBounds = 0;
 

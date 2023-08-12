@@ -41,11 +41,16 @@ public:
 	vector<GLuint> textures;
 
 	vec3 rotation = vec3();
-	vec3 position = vec3(0,0,-5);
+	vec3 position = vec3(0, 0, -5);
 	vec3 scale = vec3(1);
 
 	vec3 boundMin = vec3();
 	vec3 boundMax = vec3();
+
+	struct State {
+	public:
+		bool hovered = true;
+	}state;
 
 	Asset(string fileName);
 
