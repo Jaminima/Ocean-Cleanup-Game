@@ -9,6 +9,8 @@ Asset b("Duck");
 
 Asset c("Avocado");
 
+Asset d("Boat");
+
 SceneObjects sceneObjs;
 
 GLuint program = 0;
@@ -46,9 +48,15 @@ void InitRenderer() {
 	c.scale = vec3(50);
 	c.AddTexture("Avocado_baseColor.png");
 
+	d.LoadAsset();
+	d.position = vec3(0, 2, -3);
+	d.scale = vec3(0.1);
+	d.AddTexture("Boat.png");
+
 	a.Build();
 	b.Build();
 	c.Build();
+	d.Build();
 }
 
 void Render() {
@@ -58,6 +66,7 @@ void Render() {
 	a.Render(program, &sceneObjs);
 	b.Render(program, &sceneObjs);
 	c.Render(program, &sceneObjs);
+	d.Render(program, &sceneObjs);
 }
 
 #endif
