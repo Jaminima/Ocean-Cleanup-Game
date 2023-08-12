@@ -9,6 +9,22 @@ SceneObjects sceneObjs;
 
 GLuint program = 0;
 
+Asset* AddAsset(string assetName, vec3 position = vec3(), vec3 rotation = vec3(), vec3 scale = vec3(1)) {
+	Asset* a = new Asset(assetName);
+
+	a->LoadAsset();
+
+	a->position = position;
+	a->rotation = rotation;
+	a->scale = scale;
+
+	a->Build();
+
+	assets.push_back(a);
+
+	return a;
+}
+
 void InitRenderer() {
 	ShaderInfo  shaders[] =
 	{
@@ -29,50 +45,27 @@ void InitRenderer() {
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
 
-	Asset* asset = new Asset("Cube");
-
-	asset->LoadAsset();
-	asset->position = vec3(1, 0, -5);
-
-	asset->Build();
-	assets.push_back(asset);
+	AddAsset("Cube", vec3(1, 0, -5));
 
 	//--------------
 
-	asset = new Asset("Duck");
-
-	asset->LoadAsset();
-	asset->position = vec3(-1, 0, -7);
-	asset->scale = vec3(0.01);
-	asset->AddTexture("DuckCM.png");
-
-	asset->Build();
-	assets.push_back(asset);
+	AddAsset("Duck", vec3(3, 0, -7), vec3(), vec3(0.01))
+		->AddTexture("DuckCM.png");
 
 	//--------------
 
-	asset = new Asset("Avocado");
-
-	asset->LoadAsset();
-	asset->position = vec3(-1, -1, -4);
-	asset->scale = vec3(50);
-	asset->AddTexture("Avocado_baseColor.png");
-
-	asset->Build();
-	assets.push_back(asset);
+	AddAsset("Avocado", vec3(-2, -1, -4), vec3(), vec3(50))
+		->AddTexture("Avocado_baseColor.png");
 
 	//--------------
 
-	asset = new Asset("Boat");
+	AddAsset("Boat", vec3(0, 5, -3), vec3(-90, 0, 0), vec3(0.1))
+		->AddTexture("Boat.png");
 
-	asset->LoadAsset();
-	asset->position = vec3(0, 2, -3);
-	asset->rotation = vec3(-90, 0, 0);
-	asset->scale = vec3(0.1);
-	asset->AddTexture("Boat.png");
+	//--------------
 
-	asset->Build();
-	assets.push_back(asset);
+	AddAsset("BarramundiFish", vec3(0, -2, -3), vec3(0, 0, 0), vec3(1))
+		->AddTexture("BarramundiFish_baseColor.png");
 }
 
 void Render() {
