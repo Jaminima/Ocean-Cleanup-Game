@@ -25,6 +25,8 @@ Asset* AddAsset(string assetName, vec3 position = vec3(), vec3 rotation = vec3()
 	return a;
 }
 
+vector<Asset*> sea;
+
 void InitRenderer() {
 	ShaderInfo  shaders[] =
 	{
@@ -74,9 +76,25 @@ void InitRenderer() {
 
 	//--------------
 
-	AddAsset("Sea", vec3(-2, -2, -3), vec3(0, 0, 0), vec3(1))
-		->AddTexture("Sea.jpg");
+	auto srcSea = AddAsset("Sea", vec3(-2, -2, -10), vec3(0, 0, 0), vec3(10));
+	srcSea->AddTexture("Sea.jpg");
+	srcSea->state.canBeHovered = false;
+	sea.push_back(srcSea);
+
+	for (int x = 0; x < 10; x++) {
+		for (int y = 0; y < 10; y++) {
+			if (x == 0 && y == 0)
+				continue;
+
+			auto s = srcSea->Clone();
+			s->position += vec3(s->boundSize[2] * x * 1.95f, 0, s->boundSize[2] * y * 1.95f);
+			assets.push_back(s);
+			sea.push_back(s);
+		}
+	}
 }
+
+int stage = 0;
 
 void Render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -84,6 +102,12 @@ void Render() {
 	for (auto a : assets) {
 		a->Render(program, &sceneObjs);
 	}
+
+	//The Sea
+	for (auto s : sea) {
+
+	}
+	stage++;
 }
 
 #endif

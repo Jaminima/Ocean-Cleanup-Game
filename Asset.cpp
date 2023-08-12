@@ -14,6 +14,25 @@ Asset::Asset(string fileName)
 {
 	this->fileName = fileName;
 	this->meshes = new vector<Mesh*>();
+	this->textures = new vector<GLuint>();
+}
+
+Asset* Asset::Clone()
+{
+	Asset* a = new Asset(fileName);
+
+	a->meshes = meshes;
+	a->textures = textures;
+
+	a->rotation = rotation;
+	a->position = position;
+	a->scale = scale;
+
+	a->boundSize = boundSize;
+
+	a->state.canBeHovered = state.canBeHovered;
+
+	return a;
 }
 
 char* Asset::ReadBinaryFile(string filePath, int size)
@@ -174,7 +193,7 @@ void Asset::Build()
 	for (auto m : *this->meshes) {
 		m->Build();
 	}
-	this->Update();
+	this->UpdateBounds();
 }
 
 void Asset::Render(GLuint programHandle, SceneObjects* sceneObjects)
@@ -206,9 +225,9 @@ void Asset::Render(GLuint programHandle, SceneObjects* sceneObjects)
 	glm::mat3 normalMatrix = mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2]));
 	glUniformMatrix3fv(normRef, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-	if (textures.size() > 0) {
+	if (textures->size() > 0) {
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textures[0]);
+		glBindTexture(GL_TEXTURE_2D, (*textures)[0]);
 		glUniform1i(glGetUniformLocation(programHandle, "faceTexture"), 0);
 		glUniform1i(glGetUniformLocation(programHandle, "hasTexture"), 1);
 	}
@@ -310,10 +329,10 @@ void Asset::AddTexture(string filePath)
 
 	loadTexture(tex, fileDir + this->fileName + "/" + filePath);
 
-	textures.push_back(tex);
+	textures->push_back(tex);
 }
 
-void Asset::Update()
+void Asset::UpdateBounds()
 {
 	vec3 max = vec3();
 	for (auto m : *meshes) {

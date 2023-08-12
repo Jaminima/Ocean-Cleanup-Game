@@ -38,7 +38,7 @@ public:
 
 	vector<Mesh*>* meshes;
 
-	vector<GLuint> textures;
+	vector<GLuint>* textures;
 
 	vec3 rotation = vec3();
 	vec3 position = vec3(0, 0, -5);
@@ -49,9 +49,12 @@ public:
 	struct State {
 	public:
 		bool hovered = false;
+		bool canBeHovered = true;
 	}state;
 
 	Asset(string fileName);
+
+	Asset* Clone();
 
 	char* ReadBinaryFile(string filePath, int size);
 
@@ -63,7 +66,7 @@ public:
 
 	void AddTexture(string filePath);
 
-	void Update();
+	void UpdateBounds();
 
 	bool BeamCollides(vec3 origin, vec3 dir);
 };

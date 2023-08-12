@@ -50,7 +50,7 @@ void MouseCallback(GLFWwindow* window, double xpos, double ypos)
 	mouseY = ypos;
 
 	for (auto a : assets) {
-		if (a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt)) {
+		if (a->state.canBeHovered && a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt)) {
 			a->state.hovered = true;
 		}
 		else {
