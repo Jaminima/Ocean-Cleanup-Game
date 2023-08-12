@@ -41,11 +41,21 @@ void InitRenderer() {
 	glClearColor(0, 0, 0, 1);
 
 	glDepthFunc(GL_LEQUAL);
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST); 
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 
 	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
+
+	//--------------
+
+	auto a = AddAsset("Terrain", vec3(0, -2, 0), vec3(0, 0, 0), vec3(50));
+	a->AddTexture("material_0_baseColor.png");
+
+	//--------------
 
 	AddAsset("Cube", vec3(1, 0, -5));
 
@@ -76,12 +86,12 @@ void InitRenderer() {
 
 	//--------------
 
-	auto srcSea = AddAsset("Sea", vec3(-2, -2, -10), vec3(0, 0, 0), vec3(10));
-	srcSea->AddTexture("Sea.jpg");
+	auto srcSea = AddAsset("Sea", vec3(0, 0, 0), vec3(0, 0, 0), vec3(50));
+	srcSea->AddTexture("Sea.png");
 	srcSea->state.canBeHovered = false;
 	sea.push_back(srcSea);
 
-	for (int x = 0; x < 10; x++) {
+	/*for (int x = 0; x < 10; x++) {
 		for (int y = 0; y < 10; y++) {
 			if (x == 0 && y == 0)
 				continue;
@@ -91,10 +101,8 @@ void InitRenderer() {
 			assets.push_back(s);
 			sea.push_back(s);
 		}
-	}
+	}*/
 }
-
-int stage = 0;
 
 void Render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -102,12 +110,6 @@ void Render() {
 	for (auto a : assets) {
 		a->Render(program, &sceneObjs);
 	}
-
-	//The Sea
-	for (auto s : sea) {
-
-	}
-	stage++;
 }
 
 #endif
