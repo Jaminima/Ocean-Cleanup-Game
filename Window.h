@@ -50,6 +50,17 @@ void MouseCallback(GLFWwindow* window, double xpos, double ypos)
 	mouseY = ypos;
 }
 
+void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+		for (auto a : assets) {
+			if (a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt)) {
+				printf("Hit %s\n", a->fileName.c_str());
+			}
+		}
+	}
+}
+
 void initWindow() {
 	glfwInit();
 
@@ -62,6 +73,7 @@ void initWindow() {
 
 	glfwSetKeyCallback(window, KeyCallback);
 	glfwSetCursorPosCallback(window, MouseCallback);
+	glfwSetMouseButtonCallback(window, MouseButtonCallback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	while (!glfwWindowShouldClose(window))

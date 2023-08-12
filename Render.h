@@ -3,13 +3,7 @@
 #include "GL.h"
 #include "Asset.h"
 
-Asset a("Cube");
-
-Asset b("Duck");
-
-Asset c("Avocado");
-
-Asset d("Boat");
+vector<Asset*> assets;
 
 SceneObjects sceneObjs;
 
@@ -35,38 +29,59 @@ void InitRenderer() {
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
 
-	a.LoadAsset();
-	a.position = vec3(1, 0, -5);
+	Asset* asset = new Asset("Cube");
 
-	b.LoadAsset();
-	b.position = vec3(-1, 0, -7);
-	b.scale = vec3(0.01);
-	b.AddTexture("DuckCM.png");
+	asset->LoadAsset();
+	asset->position = vec3(1, 0, -5);
 
-	c.LoadAsset();
-	c.position = vec3(-1, -1, -4);
-	c.scale = vec3(50);
-	c.AddTexture("Avocado_baseColor.png");
+	asset->Build();
+	assets.push_back(asset);
 
-	d.LoadAsset();
-	d.position = vec3(0, 2, -3);
-	d.scale = vec3(0.1);
-	d.AddTexture("Boat.png");
+	//--------------
 
-	a.Build();
-	b.Build();
-	c.Build();
-	d.Build();
+	asset = new Asset("Duck");
+
+	asset->LoadAsset();
+	asset->position = vec3(-1, 0, -7);
+	asset->scale = vec3(0.01);
+	asset->AddTexture("DuckCM.png");
+
+	asset->Build();
+	assets.push_back(asset);
+
+	//--------------
+
+	asset = new Asset("Avocado");
+
+	asset->LoadAsset();
+	asset->position = vec3(-1, -1, -4);
+	asset->scale = vec3(50);
+	asset->AddTexture("Avocado_baseColor.png");
+
+	asset->Build();
+	assets.push_back(asset);
+
+	//--------------
+
+	asset = new Asset("Boat");
+
+	asset->LoadAsset();
+	asset->position = vec3(0, 2, -3);
+	asset->rotation = vec3(-90, 0, 0);
+	asset->scale = vec3(0.1);
+	asset->AddTexture("Boat.png");
+
+	asset->Build();
+	assets.push_back(asset);
 }
 
 void Render() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	a.Render(program, &sceneObjs);
-	b.Render(program, &sceneObjs);
-	c.Render(program, &sceneObjs);
-	d.Render(program, &sceneObjs);
+	for (auto a : assets) {
+		a->Render(program, &sceneObjs);
+	}
 }
 
 #endif

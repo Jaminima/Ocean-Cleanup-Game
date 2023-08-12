@@ -174,6 +174,7 @@ void Asset::Build()
 	for (auto m : *this->meshes) {
 		m->Build();
 	}
+	this->Update();
 }
 
 void Asset::Render(GLuint programHandle,SceneObjects* sceneObjects)
@@ -308,4 +309,62 @@ void Asset::AddTexture(string filePath)
 	loadTexture(tex, fileDir + this->fileName + "/" + filePath);
 
 	textures.push_back(tex);
+}
+
+void Asset::Update()
+{
+	vec3 min = vec3(), max = vec3();
+	for (auto m : *meshes) {
+		for (auto v : m->vertexData) {
+			for (int i = 0; i < 3;i++) {
+				if (v[i] > max[i])
+					max[i] = v[i];
+
+				if (v[i] < min[i])
+					min[i] = v[i];
+			}
+		}
+	}
+
+	auto rot = mat4(1);
+
+	rot = glm::rotate(rot, rotation[0], vec3(1.0f, 0.0f, 0.0f));
+	rot = glm::rotate(rot, rotation[1], vec3(0.0f, 1.0f, 1.0f));
+	rot = glm::rotate(rot, rotation[2], vec3(0.0f, 0.0f, 1.0f));
+
+	min = vec4(min, 1) * rot;
+	max = vec4(max, 1) * rot;
+
+	boundMin = (min * scale) + position;
+	boundMax = (max * scale) + position;
+}
+
+bool Asset::BeamCollides(vec3 origin, vec3 dir)
+{
+	dir = -normalize(dir);
+
+	if (all(greaterThanEqual(boundMin, origin)) && all(lessThanEqual(boundMax,origin)))
+		return true;
+
+	auto dirTo1 = normalize(origin - boundMin);
+	auto dirTo2 = normalize(origin - boundMax);
+
+	/*if (all(greaterThanEqual(dirToMin, dir)) && all(lessThanEqual(dirToMax, dir)))
+		return true;*/
+	
+	const float sizeAdjust = 0.8f;
+	int outOfBounds = 0;
+
+	for (int i = 0; i < 3; i++) {
+		if (dirTo1[i] > dirTo2[i]) {
+			if (dirTo1[i] * sizeAdjust < dir[i] || dirTo2[i] * sizeAdjust > dir[i])
+				outOfBounds++;
+		}
+		else {
+			if (dirTo2[i] * sizeAdjust < dir[i] || dirTo1[i] * sizeAdjust > dir[i])
+				outOfBounds++;
+		}
+	}
+
+	return outOfBounds < 2;
 }

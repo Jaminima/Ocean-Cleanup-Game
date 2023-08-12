@@ -44,6 +44,9 @@ public:
 	vec3 position = vec3(0,0,-5);
 	vec3 scale = vec3(1);
 
+	vec3 boundMin = vec3();
+	vec3 boundMax = vec3();
+
 	Asset(string fileName);
 
 	char* ReadBinaryFile(string filePath, int size);
@@ -55,6 +58,10 @@ public:
 	void Render(GLuint programHandle, SceneObjects* sceneObjects);
 
 	void AddTexture(string filePath);
+
+	void Update();
+
+	bool BeamCollides(vec3 origin, vec3 dir);
 };
 
 #endif
