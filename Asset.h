@@ -44,12 +44,11 @@ public:
 	vec3 position = vec3(0, 0, -5);
 	vec3 scale = vec3(1);
 
-	vec3 boundMin = vec3();
-	vec3 boundMax = vec3();
+	vec3 boundSize = vec3();
 
 	struct State {
 	public:
-		bool hovered = true;
+		bool hovered = false;
 	}state;
 
 	Asset(string fileName);
