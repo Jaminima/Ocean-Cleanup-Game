@@ -41,7 +41,7 @@ void InitRenderer() {
 	glClearColor(0, 0, 0, 1);
 
 	glDepthFunc(GL_LEQUAL);
-	glEnable(GL_DEPTH_TEST); 
+	glEnable(GL_DEPTH_TEST);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
@@ -52,7 +52,7 @@ void InitRenderer() {
 
 	//--------------
 
-	auto a = AddAsset("Terrain", vec3(0, -5, 0), vec3(0, 0, 0), vec3(50,5,50));
+	auto a = AddAsset("Terrain", vec3(0, -5, 0), vec3(0, 0, 0), vec3(50, 5, 50));
 	a->AddTexture("material_0_baseColor.png");
 
 	//--------------
