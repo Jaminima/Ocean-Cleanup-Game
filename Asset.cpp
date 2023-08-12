@@ -29,10 +29,37 @@ char* Asset::ReadBinaryFile(string filePath, int size)
 	return bytes;
 }
 
-struct BufferAccessors {
+class BufferView {
 public:
 	char* buff;
+	int byteStride = 0;
+};
+
+enum ComponentType {
+	_int,
+	_short
+};
+
+class BufferAccessors {
+public:
+	BufferView* bufferView;
+	int byteOffset;
 	int size;
+	int componentType;
+
+	void* getValue(int idx, size_t typeSize) {
+		return &bufferView->buff[(idx * typeSize/* * bufferView->byteStride*/) + byteOffset];
+	}
+
+	ComponentType getType() {
+		switch (componentType)
+		{
+		case 5125:
+			return _int;
+		case 5123:
+			return _short;
+		}
+	}
 };
 
 void Asset::LoadAsset()
@@ -56,7 +83,7 @@ void Asset::LoadAsset()
 	}
 
 	//Construct Buffer Views
-	vector<char*> bufferViews;
+	vector<BufferView*> bufferViews;
 
 	auto jBufferViewsArray = gltfJson.find_field_unordered("bufferViews").get_array();
 
@@ -67,7 +94,14 @@ void Asset::LoadAsset()
 		auto buffOff = jBufferView.find_field_unordered("byteOffset");
 		int buffOffset = buffOff.error() ? 0 : buffOff.get_int64().value();
 
-		bufferViews.push_back(&buffers[buff][buffOffset]);
+		auto buffStri = jBufferView.find_field_unordered("byteStride");
+		int buffStride = buffStri.error() ? 0 : buffStri.get_int64().value();
+
+		auto buffView = new BufferView();
+		buffView->buff = &buffers[buff][buffOffset];
+		buffView->byteStride = buffStride;
+
+		bufferViews.push_back(buffView);
 	}
 
 	//Construct Accessors
@@ -78,15 +112,18 @@ void Asset::LoadAsset()
 	for (auto accessor : jAccessorsArray) {
 		auto bufferIdx = accessor.find_field_unordered("bufferView").get_int64().value();
 		auto bufferSize = accessor.find_field_unordered("count").get_int64().value();
+		auto bufferType = accessor.find_field_unordered("componentType").get_int64().value();
 
 		auto buffOff = accessor.find_field_unordered("byteOffset");
 		int bufferOffset = buffOff.error() ? 0 : buffOff.get_int64().value();
 
-		auto bufferView = &bufferViews[bufferIdx][bufferOffset];
+		auto bufferView = bufferViews[bufferIdx];
 
 		auto buff = new BufferAccessors();
 
-		buff->buff = bufferView;
+		buff->componentType = bufferType;
+		buff->byteOffset = bufferOffset;
+		buff->bufferView = bufferView;
 		buff->size = bufferSize;
 
 		accessors.push_back(buff);
@@ -111,6 +148,7 @@ void Asset::LoadAsset()
 		//Build Mesh
 
 		auto idxBuff = accessors[idxAccessor];
+		auto idxType = idxBuff->getType();
 
 		auto posBuff = accessors[posAccessor];
 		auto normBuff = accessors[normAccessor];
@@ -118,13 +156,13 @@ void Asset::LoadAsset()
 
 		//for (int i = 0; i < idxBuff->size; i++) {
 		for (int i=idxBuff->size-1;i>=0;i--){
-			int idx = ((uint16*)idxBuff->buff)[i];
+			int idx = idxType == _short ? ((uint16*)idxBuff->bufferView->buff)[i] : ((int*)idxBuff->bufferView->buff)[i];
 
-			m->vertexData.push_back(((vec3*)posBuff->buff)[idx]);
-			m->normalData.push_back(((vec3*)normBuff->buff)[idx]);
+			m->vertexData.push_back((*(vec3*)posBuff->getValue(idx, sizeof(vec3))));
+			m->normalData.push_back((*(vec3*)normBuff->getValue(idx, sizeof(vec3))));
 
 			if (!_tex.error())
-				m->texCooData.push_back(((vec2*)texBuff->buff)[idx]);
+				m->texCooData.push_back((*(vec2*)texBuff->getValue(idx, sizeof(vec2))));
 		}
 
 		meshes->push_back(m);
