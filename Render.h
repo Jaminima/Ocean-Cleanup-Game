@@ -64,8 +64,18 @@ void InitRenderer() {
 
 	//--------------
 
-	AddAsset("BarramundiFish", vec3(0, -2, -3), vec3(0, 0, 0), vec3(1))
+	AddAsset("BarramundiFish", vec3(0, -2, -3), vec3(0, 0, 0), vec3(2))
 		->AddTexture("BarramundiFish_baseColor.png");
+
+	//--------------
+
+	AddAsset("Newspapers", vec3(5, -2, -3), vec3(0, 0, 0), vec3(0.02))
+		->AddTexture("Material_Newspaper_Stack_baseColor.jpeg");
+
+	//--------------
+
+	AddAsset("Sea", vec3(-2, -2, -3), vec3(0, 0, 0), vec3(1))
+		->AddTexture("Sea.jpg");
 }
 
 void Render() {
