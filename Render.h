@@ -52,7 +52,7 @@ void InitRenderer() {
 
 	//--------------
 
-	auto a = AddAsset("Terrain", vec3(0, -2, 0), vec3(0, 0, 0), vec3(50));
+	auto a = AddAsset("Terrain", vec3(0, -5, 0), vec3(0, 0, 0), vec3(50,5,50));
 	a->AddTexture("material_0_baseColor.png");
 
 	//--------------

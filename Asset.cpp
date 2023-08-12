@@ -207,6 +207,9 @@ void Asset::Render(GLuint programHandle, SceneObjects* sceneObjects)
 
 	model = glm::scale(model, scale);
 
+	GLuint camRef = glGetUniformLocation(programHandle, "CameraPos");
+	glUniform3fv(camRef, 1, glm::value_ptr(sceneObjects->cam.position));
+
 	GLuint modelRef = glGetUniformLocation(programHandle, "ModelMatrix");
 	glUniformMatrix4fv(modelRef, 1, GL_FALSE, glm::value_ptr(model));
 
