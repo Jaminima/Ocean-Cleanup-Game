@@ -101,7 +101,7 @@ void InitRenderer() {
 				((rand() % 40) / -10.0f) - 0.5f,
 				(rand() % 500) / 10.0f
 			);
-			s->rotation = vec3(0,0,0);
+			s->rotation = vec3(0, 0, 0);
 			assets.push_back(s);
 			fishes.push_back(s);
 		}

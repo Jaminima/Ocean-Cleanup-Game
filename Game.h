@@ -30,7 +30,7 @@ void Tick() {
 		model = glm::rotate(model, -f->rotation[1], vec3(0.0f, 1.0f, 1.0f));
 		model = glm::rotate(model, f->rotation[2], vec3(0.0f, 0.0f, 1.0f));
 
-		f->position -= vec3(vec4(vec3(s * 0.0001f, 0, 0.001f),1) * model);
+		f->position -= vec3(vec4(vec3(s * 0.0001f, 0, 0.001f), 1) * model);
 
 		if (f->position[1] > 0) {
 			f->rotation[stage % 3] *= -1;
@@ -42,13 +42,12 @@ void Tick() {
 			f->position[1] += 1.1f;
 		}
 
-		f->UpdateBounds();
-
 		f->state.stage++;
 
 		if (f->state.stage > 1000) {
 			f->state.stage = 0;
 			f->state.turn = rndDir();
+			f->UpdateBounds();
 		}
 	}
 }

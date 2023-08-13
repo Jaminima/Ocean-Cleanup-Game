@@ -396,14 +396,13 @@ void Mesh::GenerateRearFace()
 {
 	int vertexes = vertexData.size();
 
-	for (int i=0;i<vertexes;i+=3){
-		for (int j = 2; j >=0; j--) {
+	for (int i = 0; i < vertexes; i += 3) {
+		for (int j = 2; j >= 0; j--) {
 			vertexData.push_back(vertexData[i + j]);
 			normalData.push_back(normalData[i + j]);
 
 			if (!texCooData.empty())
 				texCooData.push_back(texCooData[i + j]);
 		}
-		
 	}
 }
