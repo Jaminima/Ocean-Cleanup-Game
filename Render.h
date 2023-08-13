@@ -38,7 +38,7 @@ void InitRenderer() {
 	program = LoadShaders(shaders);
 	glUseProgram(program);
 
-	glClearColor(0, 0, 0, 1);
+	glClearColor(20, 20, 100, 255);
 
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
