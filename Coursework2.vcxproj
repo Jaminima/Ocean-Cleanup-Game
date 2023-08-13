@@ -170,6 +170,7 @@
   <ItemGroup>
     <ClInclude Include="Asset.h" />
     <ClInclude Include="dependencies\simdjson.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GL.h" />
     <ClInclude Include="LoadShaders.h" />
     <ClInclude Include="Render.h" />
