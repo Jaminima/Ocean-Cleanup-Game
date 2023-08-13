@@ -30,6 +30,8 @@ public:
 	void Build();
 
 	void Render();
+
+	void GenerateRearFace();
 };
 
 class Asset {
@@ -69,6 +71,8 @@ public:
 	void UpdateBounds();
 
 	bool BeamCollides(vec3 origin, vec3 dir);
+
+	void GenerateRearFace();
 };
 
 #endif

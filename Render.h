@@ -9,7 +9,7 @@ SceneObjects sceneObjs;
 
 GLuint program = 0;
 
-Asset* AddAsset(string assetName, vec3 position = vec3(), vec3 rotation = vec3(), vec3 scale = vec3(1)) {
+Asset* AddAsset(string assetName, vec3 position = vec3(), vec3 rotation = vec3(), vec3 scale = vec3(1), bool generateRear = false) {
 	Asset* a = new Asset(assetName);
 
 	a->LoadAsset();
@@ -17,6 +17,9 @@ Asset* AddAsset(string assetName, vec3 position = vec3(), vec3 rotation = vec3()
 	a->position = position;
 	a->rotation = rotation;
 	a->scale = scale;
+
+	if (generateRear)
+		a->GenerateRearFace();
 
 	a->Build();
 
@@ -86,7 +89,7 @@ void InitRenderer() {
 
 	//--------------
 
-	auto srcSea = AddAsset("Sea", vec3(0, 0, 0), vec3(0, 0, 0), vec3(50));
+	auto srcSea = AddAsset("Sea", vec3(0, 0, 0), vec3(0, 0, 0), vec3(50), true);
 	srcSea->AddTexture("Sea.png");
 	srcSea->state.canBeHovered = false;
 	sea.push_back(srcSea);
