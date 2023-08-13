@@ -72,8 +72,8 @@ void InitRenderer() {
 	f->state.assetType = fish;
 	f->AddTexture("BarramundiFish_baseColor.png");
 
-	for (int x = 0; x < 10; x++) {
-		for (int y = 0; y < 10; y++) {
+	for (int x = -10; x < 10; x++) {
+		for (int y = -10; y < 10; y++) {
 			if (x == 0 && y == 0)
 				continue;
 
@@ -115,7 +115,7 @@ void InitRenderer() {
 		if (a->state.assetType != rubbish)
 			continue;
 
-		for (int j = 0; j < 50; j++) {
+		for (int j = 0; j < 20; j++) {
 			auto clon = a->Clone();
 
 			clon->position += vec3(
