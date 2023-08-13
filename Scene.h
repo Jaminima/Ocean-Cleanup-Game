@@ -6,7 +6,7 @@ public:
 	mat4 projectionMatrix;
 	mat4 viewMatrix;
 
-	vec3 position;
+	vec3 position = vec3(0,1,0);
 	vec3 rotation = vec3(0, 180, 0);
 	vec3 lookingAt;
 
