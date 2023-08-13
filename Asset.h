@@ -52,6 +52,7 @@ public:
 	public:
 		bool hovered = false;
 		bool canBeHovered = true;
+		int stage = 0;
 	}state;
 
 	Asset(string fileName);

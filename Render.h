@@ -28,7 +28,7 @@ Asset* AddAsset(string assetName, vec3 position = vec3(), vec3 rotation = vec3()
 	return a;
 }
 
-vector<Asset*> sea;
+vector<Asset*> fish;
 
 void InitRenderer() {
 	ShaderInfo  shaders[] =
@@ -79,8 +79,21 @@ void InitRenderer() {
 
 	//--------------
 
-	AddAsset("BarramundiFish", vec3(0, -2, -3), vec3(0, 0, 0), vec3(2))
-		->AddTexture("BarramundiFish_baseColor.png");
+	auto f = AddAsset("BarramundiFish", vec3(-20, -2, -20), vec3(0, 0, 0), vec3(2));
+	f->AddTexture("BarramundiFish_baseColor.png");
+	fish.push_back(f);
+
+	for (int x = 0; x < 10; x++) {
+		for (int y = 0; y < 10; y++) {
+			if (x == 0 && y == 0)
+				continue;
+
+			auto s = f->Clone();
+			s->position += vec3(5*x, 0, 5*y);
+			assets.push_back(s);
+			fish.push_back(s);
+		}
+	}
 
 	//--------------
 
@@ -92,19 +105,6 @@ void InitRenderer() {
 	auto srcSea = AddAsset("Sea", vec3(0, 0, 0), vec3(0, 0, 0), vec3(50), true);
 	srcSea->AddTexture("Sea.png");
 	srcSea->state.canBeHovered = false;
-	sea.push_back(srcSea);
-
-	/*for (int x = 0; x < 10; x++) {
-		for (int y = 0; y < 10; y++) {
-			if (x == 0 && y == 0)
-				continue;
-
-			auto s = srcSea->Clone();
-			s->position += vec3(s->boundSize[2] * x * 1.95f, 0, s->boundSize[2] * y * 1.95f);
-			assets.push_back(s);
-			sea.push_back(s);
-		}
-	}*/
 }
 
 void Render() {

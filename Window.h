@@ -21,7 +21,10 @@ void initWindow() {
 		// uncomment to draw only wireframe
 		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+		Tick();
+
 		Render();
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
