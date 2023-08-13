@@ -1,11 +1,39 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/JwbRf3Bx)
-# 2021-COMP3016-W2: Free Project
+# Ocean Cleanup Game
 
-Please update this file and include the instructions and use this document for your report.
+Swim around the ocean, catch fish, remove rubbish and make sure you dont drown!
 
-Make sure to work entirely using OpenGL4.X which you can check if your project relies on shader files and does not use fixed functions for rendering.
+Demo Video
 
-Ideally keep the setup Rendering toolchain to reduce the trial and error process of finding something new that works for you.
+## Running
 
-Work incrementally and be aware of the scale and scope of your project.
+Download the latest release or compile the program using visual studio. Then run the exe located within the build folders.
+
+## Idea
+
+The idea for the game came from my interest in the enviroment and keeping our world clean. As such i thought a game like this would prove a good tool to engage people with the idea of how our waste ends up in the sea.
+
+## Structure
+
+The code base is split into a couple key parts, each with a specialisation that draws upon other elements.
+
+### Window & Render
+
+Code to manage the creation of the GL window, along with loading and rendering assets. The code here is abstracted away from most of the GL work going on behind the scenese. This enables a less cluttered code base.
+
+### Asset & Mesh
+
+Containing the actual code for the loading and drawing of assets. We break the process into multiple steps, loading, building and rendering. This allows for each step to be performed and then any alterations to be made.
+
+In here is the majority of our heavy lifiting of GL functions.
+
+### Game
+
+Here we have code related to user input and actions in the world. This includes moving fish, collecting items and highlighting assets.
+
+### Additional Libraries
+
+[simdjson/simdjson: Parsing gigabytes of JSON per second](https://github.com/simdjson/simdjson) - Used to Parse GLTF JSON at a high rate.
+
+
+
 

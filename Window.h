@@ -4,7 +4,7 @@
 void initWindow() {
 	glfwInit();
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, "Textured Cube", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "Ocean Cleanup", NULL, NULL);
 
 	glfwMakeContextCurrent(window);
 	glewInit();
