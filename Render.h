@@ -30,8 +30,6 @@ Asset* AddAsset(string assetName, vec3 position = vec3(), vec3 rotation = vec3()
 	return a;
 }
 
-vector<Asset*> fishes;
-
 void InitRenderer() {
 	srand(std::time(nullptr));
 
@@ -64,31 +62,19 @@ void InitRenderer() {
 
 	//--------------
 
-	AddAsset("Cube", vec3(1, 0, -5));
+	auto srcSea = AddAsset("Sea", vec3(0, 0, 0), vec3(0, 0, 0), vec3(50), true);
+	srcSea->AddTexture("Sea.png");
+	srcSea->state.canBeHovered = false;
 
 	//--------------
 
-	a = AddAsset("Duck", vec3(3, 0, -7), vec3(), vec3(0.01));
-	a->AddTexture("DuckCM.png");
-	a->state.assetType = rubbish;
-
-	//--------------
-
-	a = AddAsset("Avocado", vec3(-2, -1, -4), vec3(), vec3(50));
-	a->AddTexture("Avocado_baseColor.png");
-	a->state.assetType = rubbish;
-
-	//--------------
-
-	AddAsset("Boat", vec3(0, 5, -3), vec3(-90, 0, 0), vec3(0.1))
-		->AddTexture("Boat.png");
+	//AddAsset("Cube", vec3(1, 0, -5));
 
 	//--------------
 
 	auto f = AddAsset("BarramundiFish", vec3(-20, -2, -20), vec3(0, 0, 0), vec3(2));
 	f->state.assetType = fish;
 	f->AddTexture("BarramundiFish_baseColor.png");
-	fishes.push_back(f);
 
 	for (int x = 0; x < 10; x++) {
 		for (int y = 0; y < 10; y++) {
@@ -103,21 +89,54 @@ void InitRenderer() {
 			);
 			s->rotation = vec3(0, 0, 0);
 			assets.push_back(s);
-			fishes.push_back(s);
 		}
 	}
 
 	//--------------
 
-	a = AddAsset("Newspapers", vec3(5, -2, -3), vec3(0, 0, 0), vec3(0.02));
+	a = AddAsset("Duck", vec3(-20, -6, -20), vec3(), vec3(0.01));
+	a->AddTexture("DuckCM.png");
+	a->state.assetType = rubbish;
+
+	//--------------
+
+	a = AddAsset("Avocado", vec3(-18, -5.5, -20), vec3(), vec3(10));
+	a->AddTexture("Avocado_baseColor.png");
+	a->state.assetType = rubbish;
+
+	//--------------
+
+	a = AddAsset("Newspapers", vec3(-20, -5.7, -18), vec3(0, 0, 0), vec3(0.005));
 	a->AddTexture("Material_Newspaper_Stack_baseColor.jpeg");
 	a->state.assetType = rubbish;
 
 	//--------------
 
-	auto srcSea = AddAsset("Sea", vec3(0, 0, 0), vec3(0, 0, 0), vec3(50), true);
-	srcSea->AddTexture("Sea.png");
-	srcSea->state.canBeHovered = false;
+	int assetCount = assets.size();
+
+	for (int i = 0; i < assetCount; i++) {
+		a = assets[i];
+		if (a->state.assetType != rubbish)
+			continue;
+
+		for (int j = 0; j < 50; j++) {
+			auto clon = a->Clone();
+
+			clon->position += vec3(
+				(rand() % 500) / 10.0f,
+				0,
+				(rand() % 500) / 10.0f
+			);
+
+			clon->rotation = vec3(
+				(rand() % 3600) / 100.0f,
+				(rand() % 3600) / 100.0f,
+				(rand() % 3600) / 100.0f
+			);
+
+			assets.push_back(clon);
+		}
+	}
 }
 
 void Render() {

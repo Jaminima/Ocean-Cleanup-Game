@@ -18,7 +18,10 @@ vec3 rndDir() {
 }
 
 void Tick() {
-	for (auto f : fishes) {
+	for (auto f : assets) {
+		if (f->state.assetType != fish || f->state.hidden)
+			continue;
+
 		int stage = f->state.stage;
 
 		int s = ((stage % 1000) - 499) / 100.0f;
