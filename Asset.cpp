@@ -358,7 +358,7 @@ void Asset::UpdateBounds()
 	boundSize = (max * scale);
 }
 
-bool Asset::BeamCollides(vec3 origin, vec3 dir)
+bool Asset::BeamCollides(vec3 origin, vec3 dir, float* dist)
 {
 	dir = -normalize(dir);
 
@@ -375,6 +375,8 @@ bool Asset::BeamCollides(vec3 origin, vec3 dir)
 			return false;
 		}
 	}
+
+	*dist = lenToCenter;
 
 	return true;
 }

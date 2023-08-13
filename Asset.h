@@ -70,7 +70,7 @@ public:
 
 	void UpdateBounds();
 
-	bool BeamCollides(vec3 origin, vec3 dir);
+	bool BeamCollides(vec3 origin, vec3 dir, float* dist);
 
 	void GenerateRearFace();
 };

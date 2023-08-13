@@ -5,6 +5,8 @@
 struct gameState {
 public:
 	int score = 0;
+	int maxBreath = 20;
+	int curBreath = 20;
 };
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -54,9 +56,11 @@ void MouseCallback(GLFWwindow* window, double xpos, double ypos)
 	mouseX = xpos;
 	mouseY = ypos;
 
+	float dist = 0;
+
 	for (auto a : assets) {
-		if (a->state.canBeHovered && a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt)) {
-			a->state.hovered = true;
+		if (a->state.canBeHovered && a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt, &dist)) {
+			a->state.hovered = dist < 5;
 		}
 		else {
 			a->state.hovered = false;
@@ -66,10 +70,13 @@ void MouseCallback(GLFWwindow* window, double xpos, double ypos)
 
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
+	float dist;
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		for (auto a : assets) {
-			if (a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt)) {
-				printf("Hit %s\n", a->fileName.c_str());
+			if (a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt, &dist)) {
+				if (dist < 5) {
+					printf("Hit %s\n", a->fileName.c_str());
+				}
 			}
 		}
 	}
