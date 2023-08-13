@@ -375,7 +375,7 @@ bool Asset::BeamCollides(vec3 origin, vec3 dir, float* dist)
 	auto collisionToCenter = collisionPoint - position;
 
 	for (int i = 0; i < 3; i++) {
-		if (abs(collisionToCenter[i]) > boundSize[i]) {
+		if (abs(collisionToCenter[i]) > boundSize[i] * 2.0f) {
 			return false;
 		}
 	}
