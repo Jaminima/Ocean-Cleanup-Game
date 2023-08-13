@@ -18,7 +18,7 @@ void main()
     float fogFact = clamp(exp2 (-density * density * z * z * 1.442695),0,1);
 
     FragColor = hasTexture ? texture(faceTexture, vTextureCoordinate) : vec4(0,10,10,255);
-    FragColor = hovered ? FragColor + vec4(100,100,0,255) : FragColor;
+    FragColor = hovered ? FragColor*vec4(4,4,1,1) : FragColor;
 
     vec4 fogCol = vec4(100 * (1-depth),100 * (1-depth),255,0);
 
