@@ -15,7 +15,7 @@ void Tick() {
 
 		int s = ((stage % 1000) - 499) / 100.0f;
 
-		f->position += vec3(s * 0.00001f, 0, -0.001f);
+		f->position += vec3(s * 0.0001f, 0, -0.001f);
 		f->rotation += vec3(0, 0, s * 0.0001f);
 
 		f->state.stage++;
