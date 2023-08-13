@@ -53,6 +53,7 @@ public:
 		bool hovered = false;
 		bool canBeHovered = true;
 		int stage = 0;
+		vec3 turn = vec3();
 	}state;
 
 	Asset(string fileName);

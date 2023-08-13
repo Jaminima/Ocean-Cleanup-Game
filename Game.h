@@ -9,16 +9,44 @@ public:
 	int curBreath = 20;
 };
 
+vec3 rndDir() {
+	return vec3(
+		(rand() % 1000 - 499) / 1000000.0f,
+		(rand() % 1000 - 499) / 1000000.0f,
+		0);
+}
+
 void Tick() {
 	for (auto f : fish) {
 		int stage = f->state.stage;
 
 		int s = ((stage % 1000) - 499) / 100.0f;
+		f->rotation += vec3(f->state.turn[0], f->state.turn[1], s * 0.0001f);
 
-		f->position += vec3(s * 0.0001f, 0, -0.001f);
-		f->rotation += vec3(0, 0, s * 0.0001f);
+		mat4 model(1);
+
+		model = glm::rotate(model, -f->rotation[0], vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, -f->rotation[1], vec3(0.0f, 1.0f, 1.0f));
+		model = glm::rotate(model, f->rotation[2], vec3(0.0f, 0.0f, 1.0f));
+
+		f->position -= vec3(vec4(vec3(s * 0.0001f, 0, 0.001f),1) * model);
+
+		if (f->position[1] > 0) {
+			f->rotation[stage % 3] *= -1;
+			f->position[1] -= 0.1f;
+		}
+
+		if (f->position[1] < -5) {
+			f->rotation[stage % 3] *= -1;
+			f->position[1] += 0.1f;
+		}
 
 		f->state.stage++;
+
+		if (f->state.stage > 1000) {
+			f->state.stage = 0;
+			f->state.turn = rndDir();
+		}
 	}
 }
 

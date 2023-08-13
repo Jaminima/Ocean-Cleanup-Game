@@ -2,6 +2,8 @@
 #define __Render
 #include "GL.h"
 #include "Asset.h"
+#include <cstdlib>
+#include <ctime>
 
 vector<Asset*> assets;
 
@@ -31,6 +33,8 @@ Asset* AddAsset(string assetName, vec3 position = vec3(), vec3 rotation = vec3()
 vector<Asset*> fish;
 
 void InitRenderer() {
+	srand(std::time(nullptr));
+
 	ShaderInfo  shaders[] =
 	{
 		{ GL_VERTEX_SHADER, "media/triangles.vert" },
@@ -90,6 +94,7 @@ void InitRenderer() {
 
 			auto s = f->Clone();
 			s->position += vec3(5*x, 0, 5*y);
+			s->rotation = vec3(0, 0, 0);
 			assets.push_back(s);
 			fish.push_back(s);
 		}
