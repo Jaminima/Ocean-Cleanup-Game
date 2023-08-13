@@ -6,8 +6,8 @@ struct gameState {
 public:
 	int rubbishTaken = 0;
 	int fishTaken = 0;
-	int maxBreath = 20;
-	int curBreath = 20;
+	float maxBreath = 20;
+	float curBreath = 20;
 } _gameState;
 
 vec3 rndDir() {
@@ -17,7 +17,29 @@ vec3 rndDir() {
 		0);
 }
 
+void PrintState() {
+	float score = _gameState.rubbishTaken + (_gameState.fishTaken / 5.0f);
+	printf("Breath %.2f/%.0f -- Score %.1f        \r", _gameState.curBreath, _gameState.maxBreath, score);
+}
+
+clock_t gameTime = 0;
+
 void Tick() {
+	auto newTime = clock();
+
+	PrintState();
+
+	auto tDif = (newTime - gameTime) / 1000.0f;
+
+	if (sceneObjs.cam.position[1] < 0) {
+		_gameState.curBreath -= tDif;
+	}
+	else {
+		_gameState.curBreath += _gameState.curBreath < 20 ? tDif : 0;
+	}
+
+	gameTime = newTime;
+
 	for (auto f : assets) {
 		if (f->state.assetType != fish || f->state.hidden)
 			continue;
@@ -36,13 +58,13 @@ void Tick() {
 		f->position -= vec3(vec4(vec3(s * 0.0001f, 0, 0.001f), 1) * model);
 
 		if (f->position[1] > 0) {
-			f->rotation[stage % 3] *= -1;
-			f->position[1] -= 1.1f;
+			f->rotation = vec3();
+			f->position[1] -= 0.1f;
 		}
 
 		if (f->position[1] < -5) {
-			f->rotation[stage % 3] *= -1;
-			f->position[1] += 1.1f;
+			f->rotation = vec3();
+			f->position[1] += 0.1f;
 		}
 
 		f->state.stage++;
@@ -133,17 +155,17 @@ void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 					case rubbish:
 						a->state.hidden = true;
 						_gameState.rubbishTaken++;
-						printf("Removed Rubbish\n");
+						//printf("Removed Rubbish\n");
 						break;
 
 					case fish:
 						a->state.hidden = true;
 						_gameState.fishTaken++;
-						printf("Harvested A Fish\n");
+						//printf("Harvested A Fish\n");
 						break;
 
 					default:
-						printf("Clicked %s\n", a->fileName.c_str());
+						//printf("Clicked %s\n", a->fileName.c_str());
 						break;
 					}
 				}
