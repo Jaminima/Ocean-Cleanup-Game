@@ -20,11 +20,12 @@ void main()
     FragColor = hasTexture ? texture(faceTexture, vTextureCoordinate) : vec4(0,10,10,255);
     FragColor = hovered ? FragColor + vec4(100,100,0,255) : FragColor;
 
-
     vec4 fogCol = vec4(100 * (1-depth),100 * (1-depth),255,0);
 
     FragColor = mix(fogCol, FragColor, fogFact);
     
-    FragColor = vec4(FragColor[0] * depth, FragColor[1] * depth, FragColor[2],FragColor[3]);
+    float clampDepth = clamp(0.6, 1, depth);
+
+    FragColor = vec4(FragColor[0] * clampDepth, FragColor[1] * clampDepth, FragColor[2],FragColor[3]);
     
 }
