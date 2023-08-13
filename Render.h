@@ -93,8 +93,12 @@ void InitRenderer() {
 				continue;
 
 			auto s = f->Clone();
-			s->position += vec3(5*x, 0, 5*y);
-			s->rotation = vec3(0, 0, 0);
+			s->position += vec3(
+				(rand() % 500) / 10.0f,
+				((rand() % 40) / -10.0f) - 0.5f,
+				(rand() % 500) / 10.0f
+			);
+			s->rotation = vec3(0,0,0);
 			assets.push_back(s);
 			fish.push_back(s);
 		}

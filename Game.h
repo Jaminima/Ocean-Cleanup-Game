@@ -33,13 +33,15 @@ void Tick() {
 
 		if (f->position[1] > 0) {
 			f->rotation[stage % 3] *= -1;
-			f->position[1] -= 0.1f;
+			f->position[1] -= 1.1f;
 		}
 
 		if (f->position[1] < -5) {
 			f->rotation[stage % 3] *= -1;
-			f->position[1] += 0.1f;
+			f->position[1] += 1.1f;
 		}
+
+		f->UpdateBounds();
 
 		f->state.stage++;
 
