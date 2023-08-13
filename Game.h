@@ -132,44 +132,59 @@ void MouseCallback(GLFWwindow* window, double xpos, double ypos)
 	mouseX = xpos;
 	mouseY = ypos;
 
+	Asset* closest = 0x0;
+	float closestDist = 5;
 	float dist = 0;
 
 	for (auto a : assets) {
+		a->state.hovered = false;
 		if (a->state.canBeHovered && a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt, &dist)) {
-			a->state.hovered = dist < 5;
+			if (closestDist > dist) {
+				closest = a;
+				closestDist = dist;
+			}
 		}
-		else {
-			a->state.hovered = false;
-		}
+	}
+
+	if (closest) {
+		closest->state.hovered = true;
 	}
 }
 
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
+	Asset* closest = 0x0;
+	float closestDist = 5;
 	float dist;
+
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		for (auto a : assets) {
 			if (!a->state.hidden && a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt, &dist)) {
-				if (dist < 5) {
-					switch (a->state.assetType) {
-					case rubbish:
-						a->state.hidden = true;
-						_gameState.rubbishTaken++;
-						//printf("Removed Rubbish\n");
-						break;
-
-					case fish:
-						a->state.hidden = true;
-						_gameState.fishTaken++;
-						//printf("Harvested A Fish\n");
-						break;
-
-					default:
-						//printf("Clicked %s\n", a->fileName.c_str());
-						break;
-					}
+				if (closestDist > dist) {
+					closest = a;
+					closestDist = dist;
 				}
 			}
+		}
+	}
+
+	if (closest) {
+		switch (closest->state.assetType) {
+		case rubbish:
+			closest->state.hidden = true;
+			_gameState.rubbishTaken++;
+			//printf("Removed Rubbish\n");
+			break;
+
+		case fish:
+			closest->state.hidden = true;
+			_gameState.fishTaken++;
+			//printf("Harvested A Fish\n");
+			break;
+
+		default:
+			//printf("Clicked %s\n", a->fileName.c_str());
+			break;
 		}
 	}
 }
