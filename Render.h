@@ -30,7 +30,7 @@ Asset* AddAsset(string assetName, vec3 position = vec3(), vec3 rotation = vec3()
 	return a;
 }
 
-vector<Asset*> fish;
+vector<Asset*> fishes;
 
 void InitRenderer() {
 	srand(std::time(nullptr));
@@ -68,13 +68,15 @@ void InitRenderer() {
 
 	//--------------
 
-	AddAsset("Duck", vec3(3, 0, -7), vec3(), vec3(0.01))
-		->AddTexture("DuckCM.png");
+	a = AddAsset("Duck", vec3(3, 0, -7), vec3(), vec3(0.01));
+	a->AddTexture("DuckCM.png");
+	a->state.assetType = rubbish;
 
 	//--------------
 
-	AddAsset("Avocado", vec3(-2, -1, -4), vec3(), vec3(50))
-		->AddTexture("Avocado_baseColor.png");
+	a = AddAsset("Avocado", vec3(-2, -1, -4), vec3(), vec3(50));
+	a->AddTexture("Avocado_baseColor.png");
+	a->state.assetType = rubbish;
 
 	//--------------
 
@@ -84,8 +86,9 @@ void InitRenderer() {
 	//--------------
 
 	auto f = AddAsset("BarramundiFish", vec3(-20, -2, -20), vec3(0, 0, 0), vec3(2));
+	f->state.assetType = fish;
 	f->AddTexture("BarramundiFish_baseColor.png");
-	fish.push_back(f);
+	fishes.push_back(f);
 
 	for (int x = 0; x < 10; x++) {
 		for (int y = 0; y < 10; y++) {
@@ -100,14 +103,15 @@ void InitRenderer() {
 			);
 			s->rotation = vec3(0,0,0);
 			assets.push_back(s);
-			fish.push_back(s);
+			fishes.push_back(s);
 		}
 	}
 
 	//--------------
 
-	AddAsset("Newspapers", vec3(5, -2, -3), vec3(0, 0, 0), vec3(0.02))
-		->AddTexture("Material_Newspaper_Stack_baseColor.jpeg");
+	a = AddAsset("Newspapers", vec3(5, -2, -3), vec3(0, 0, 0), vec3(0.02));
+	a->AddTexture("Material_Newspaper_Stack_baseColor.jpeg");
+	a->state.assetType = rubbish;
 
 	//--------------
 

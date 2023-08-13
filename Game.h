@@ -4,10 +4,11 @@
 
 struct gameState {
 public:
-	int score = 0;
+	int rubbishTaken = 0;
+	int fishTaken = 0;
 	int maxBreath = 20;
 	int curBreath = 20;
-};
+} _gameState;
 
 vec3 rndDir() {
 	return vec3(
@@ -17,7 +18,7 @@ vec3 rndDir() {
 }
 
 void Tick() {
-	for (auto f : fish) {
+	for (auto f : fishes) {
 		int stage = f->state.stage;
 
 		int s = ((stage % 1000) - 499) / 100.0f;
@@ -116,9 +117,25 @@ void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 	float dist;
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		for (auto a : assets) {
-			if (a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt, &dist)) {
+			if (!a->state.hidden && a->BeamCollides(sceneObjs.cam.position, sceneObjs.cam.lookingAt, &dist)) {
 				if (dist < 5) {
-					printf("Hit %s\n", a->fileName.c_str());
+					switch (a->state.assetType) {
+					case rubbish:
+						a->state.hidden = true;
+						_gameState.rubbishTaken++;
+						printf("Removed Rubbish\n");
+						break;
+
+					case fish:
+						a->state.hidden = true;
+						_gameState.fishTaken++;
+						printf("Harvested A Fish\n");
+						break;
+
+					default:
+						printf("Clicked %s\n", a->fileName.c_str());
+						break;
+					}
 				}
 			}
 		}

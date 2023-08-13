@@ -31,6 +31,7 @@ Asset* Asset::Clone()
 	a->boundSize = boundSize;
 
 	a->state.canBeHovered = state.canBeHovered;
+	a->state.assetType = state.assetType;
 
 	return a;
 }
@@ -198,6 +199,9 @@ void Asset::Build()
 
 void Asset::Render(GLuint programHandle, SceneObjects* sceneObjects)
 {
+	if (state.hidden)
+		return;
+
 	glm::mat4 model(1.0f);
 	model = glm::translate(model, vec3(position));
 

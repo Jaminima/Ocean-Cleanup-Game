@@ -34,6 +34,12 @@ public:
 	void GenerateRearFace();
 };
 
+enum GameAssetType {
+	fish,
+	rubbish,
+	none
+};
+
 class Asset {
 public:
 	string fileName;
@@ -50,8 +56,10 @@ public:
 
 	struct State {
 	public:
+		bool hidden = false;
 		bool hovered = false;
 		bool canBeHovered = true;
+		GameAssetType assetType = none;
 		int stage = 0;
 		vec3 turn = vec3();
 	}state;
