@@ -2,7 +2,7 @@
 
 Swim around the ocean, catch fish, remove rubbish and make sure you dont drown!
 
-Demo Video
+[COMP3016 Video - YouTube](https://youtu.be/T3SWD07bMNA)
 
 ## Running
 
@@ -33,7 +33,3 @@ Here we have code related to user input and actions in the world. This includes 
 ### Additional Libraries
 
 [simdjson/simdjson: Parsing gigabytes of JSON per second](https://github.com/simdjson/simdjson) - Used to Parse GLTF JSON at a high rate.
-
-
-
-

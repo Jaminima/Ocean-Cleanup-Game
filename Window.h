@@ -9,6 +9,8 @@ void initWindow() {
 	glfwMakeContextCurrent(window);
 	glewInit();
 
+	glfwHideWindow(window);
+
 	InitRenderer();
 
 	glfwSetKeyCallback(window, KeyCallback);
@@ -19,7 +21,14 @@ void initWindow() {
 	system("cls");
 
 	printf("Controls:\nWASD - Move\nX/Z - Up/Down\nMouse - Look\nLeft Click - Pickup Item\n\nR - Restart\n] - Quit\n\n");
+	
 	printf("The Aim Of The Game Is To Collect Rubbish & Fish From The Ocean.\nHigher The Score The Better!\nMake Sure You Keep An Eye On Your Breath!\n\n");
+
+	printf("Press Any Key To Continue...\n\n");
+
+	cin.ignore();
+
+	glfwShowWindow(window);
 
 	while (!glfwWindowShouldClose(window))
 	{
