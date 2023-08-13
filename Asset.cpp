@@ -86,6 +86,8 @@ void Asset::LoadAsset()
 {
 	string filePath = fileDir + this->fileName + "/";
 
+	printf("Loading Asset From %s\n", filePath.c_str());
+
 	ondemand::parser parser;
 	padded_string json = padded_string::load(filePath + this->fileName + ".gltf");
 	ondemand::document gltfJson = parser.iterate(json);
@@ -187,6 +189,10 @@ void Asset::LoadAsset()
 
 		meshes->push_back(m);
 	}
+
+	for (auto b : buffers) {
+		delete[] b;
+	}
 }
 
 void Asset::Build()
@@ -256,6 +262,8 @@ Mesh::Mesh(string name)
 
 void Mesh::Build()
 {
+	printf("Building Asset %s\n", name.c_str());
+
 	glGenVertexArrays(1, &this->vaoBuffer);
 	glBindVertexArray(this->vaoBuffer);
 

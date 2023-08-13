@@ -83,6 +83,14 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		break;
 	}
 
+	if (sceneObjs.cam.position[1] > 1) {
+		sceneObjs.cam.position[1] -= 0.1f;
+	}
+
+	if (sceneObjs.cam.position[1] < -5) {
+		sceneObjs.cam.position[1] += 0.1f;
+	}
+
 	sceneObjs.cam.updateMatrix();
 }
 

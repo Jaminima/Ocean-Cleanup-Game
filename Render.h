@@ -57,7 +57,7 @@ void InitRenderer() {
 
 	//--------------
 
-	auto a = AddAsset("Terrain", vec3(0, -5, 0), vec3(0, 0, 0), vec3(50, 5, 50));
+	auto a = AddAsset("Terrain", vec3(0, -5, 0), vec3(0, 0, 0), vec3(100, 5, 100));
 	a->AddTexture("material_0_baseColor.png");
 
 	//--------------
@@ -65,10 +65,6 @@ void InitRenderer() {
 	auto srcSea = AddAsset("Sea", vec3(0, 0, 0), vec3(0, 0, 0), vec3(50), true);
 	srcSea->AddTexture("Sea.png");
 	srcSea->state.canBeHovered = false;
-
-	//--------------
-
-	//AddAsset("Cube", vec3(1, 0, -5));
 
 	//--------------
 
